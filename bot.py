@@ -2,11 +2,13 @@ import sys
 import time
 import random
 import datetime
-import telepot
 import subprocess
 import ConfigParser
+import telepot
+from telepot.namedtuple import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove, ForceReply
+from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
-# ConfigParser for token & chat_id
+# configparser for token & chat_id
 config = ConfigParser.ConfigParser()
 config.read(sys.argv[1])
 token = config.get('settings','token')
@@ -14,24 +16,21 @@ chat_id = config.get('settings','chat_id')
 
 def handle(msg):
 	chat_ids = msg['chat']['id']
-	command = msg['text']
+	command = msg['text'].lower()
 	
-	print 'Command received: %s' % command
+	print('Command received: %s' % command)
 		
-	if command == 'enable VNC server':
+	if command == 'enable vnc server':
 		risp=subprocess.check_output("vncserver", shell=True)
 		bot.sendMessage(chat_id, 'Done.')
-	elif command == 'disable VNC server':
+	elif command == 'disable vnc server':
 		subprocess.check_output("vncserver -kill :1", shell=True)
 		bot.sendMessage(chat_id, 'Done.')
-	elif command == 'x11vnc':
-		subprocess.check_output("x11vnc", shell=True)
-		bot.sendMessage(chat_id, 'x11 VNC ON')
 	elif command == '/start':
 		bot.sendMessage(chat_ids, 'This bot responds only to its owner.')
 	elif command == 'time':
 		bot.sendMessage(chat_id, str(datetime.datetime.now()))
-	elif (command == 'Help' or command == 'help'):
+	elif command == 'help':
 		bot.sendMessage(chat_id, 'Text me one of the following commands:')
 		bot.sendMessage(chat_id, 'time')
 		bot.sendMessage(chat_id, 'uptime')
@@ -39,7 +38,6 @@ def handle(msg):
 		bot.sendMessage(chat_id, 'free ram 2')
 		bot.sendMessage(chat_id, 'free space')
 		bot.sendMessage(chat_id, 'enable/disable VNC server')
-		bot.sendMessage(chat_id, 'x11vnc')
 		bot.sendMessage(chat_id, 'enable/disable test2 dir')
 		bot.sendMessage(chat_id, 'command X (executes X command in linux shell and returns output)')
 		bot.sendMessage(chat_id, 'commands X && Y && ... (executes independents comands and returns output)')
@@ -83,6 +81,12 @@ def handle(msg):
 	elif command == 'reboot':
 		bot.sendMessage(chat_id, 'Rebooting...')
 		risp=subprocess.check_output("sudo reboot", shell=True)
+	elif command == '/c':
+		markup = ReplyKeyboardMarkup(keyboard=[
+			['time', 'uptime', 'free ram','free space'],
+			['enable vnc server', 'disable vnc server'],
+			])
+		bot.sendMessage(chat_id, 'command shorcuts', reply_markup=markup)
 	else:
 		if chat_ids != chat_id:
 			bot.sendMessage(chat_ids, 'Error. Please retry.')
