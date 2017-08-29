@@ -83,7 +83,8 @@ def handle(msg):
 		risp=subprocess.check_output("sudo reboot", shell=True)
 	elif command == '/c':
 		markup = ReplyKeyboardMarkup(keyboard=[
-			['time', 'uptime', 'free ram','free space'],
+			['time', 'uptime'],
+			[ 'free ram','free space'],
 			['enable vnc server', 'disable vnc server'],
 			])
 		bot.sendMessage(chat_id, 'command shorcuts', reply_markup=markup)
