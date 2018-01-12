@@ -7,6 +7,8 @@ No need to set port-forwardings, no custom signed certificates, no webhooks, no 
 - Telepot library, on debian with python installed: "sudo pip install telepot".
 - Telegram bot token, obtainable via @BotFather chat, write it at the 'settings.txt'.
 - Personal chatid, write it at the 'settings.txt'.
+- Transmission remote ID and password, write it at the 'settings.txt'. 
+- Transmission download destination, write it at the 'settings.txt'.
 
 To enable bot to comunicate with you ( due to telegram security policy, anti-spam etc...), 
 you need to chat first by opening bot chat and sending "/start", enough to unlock bot direct messaging without human interaction.
@@ -20,6 +22,7 @@ The bot is configured to reply only to your chatid (in yor chat) for security re
 ever use spaces to indentate or you'll get execution errors, use tabs instead.
 
 To add more defined commands simply aggregate to "def handle(msg)" function more elif cases. Have fun.
+To use transmission, send .torrent file to bot.
 
 You can autostart the bot following this toutorial:
 http://www.raspberrypi-spy.co.uk/2015/10/how-to-autorun-a-python-script-on-boot-using-systemd/
