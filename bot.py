@@ -14,8 +14,6 @@ config = ConfigParser.ConfigParser()
 config.read(sys.argv[1])
 token = config.get('settings','token')
 chat_id = config.get('settings','chat_id')
-tm_n = config.get('settings','tm_n')
-tm_dest = config.get('settings','tm_dest')
 
 def handle(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
@@ -84,17 +82,6 @@ def handle(msg):
         else:
             if chat_ids != chat_id:
                 bot.sendMessage(chat_ids, 'Error. Please retry.')
-    elif content_type == 'document':
-        f_id = msg['document']['file_id']
-        f_name = msg['document']['file_name']
-        f_type = msg['document']['mime_type']
-        if f_type == "application/x-bittorrent":
-            f_temp = os.path.join(os.path.dirname(os.path.abspath(__file__)),f_name)
-            command = "transmission-remote -n '" + tm_n + "' -a " + f_temp + " -w " + tm_dest 
-            bot.download_file(f_id, f_temp)
-            risp = subprocess.check_output(command, shell=True)
-            bot.sendMessage(chat_id, risp)
-            subprocess.call("rm " + f_temp, shell=True)
 
 bot = telepot.Bot(token)
 bot.message_loop(handle)
